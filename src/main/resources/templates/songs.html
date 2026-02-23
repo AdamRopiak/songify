@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Song list</title>
+</head>
+<body>
+    <h1>Home Page</h1>
+        <ul>
+            <li th:each="entry: ${songMap}">
+                <span th:text="'Song: ' + ${entry.key} + ': ' + ${entry.value}"></span>
+            </li>
+        </ul>
+</body>
+</html>
