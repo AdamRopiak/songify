@@ -1,4 +1,4 @@
-package com.songify;
+package com.songify.song;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Controller
-public class SongsViewController {
+public class SongViewController {
 
     private Map<Integer, String> database = new HashMap<>();
 
