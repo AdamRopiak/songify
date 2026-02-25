@@ -56,9 +56,14 @@ public class SongRestController {
        return ResponseEntity.ok(new SingleSongResponseDto(newSong));
     }
     @DeleteMapping("/songs/{id}")
-    public ResponseEntity<String> deleteSongById(@PathVariable Integer id){
+    public ResponseEntity<DeleteSongResponsDto> deleteSongById(@PathVariable Integer id){
+       if(!database.containsKey(id)) {
+           return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                   .body(new DeleteSongResponsDto("Song not found", HttpStatus.NOT_FOUND));
+       }
        database.remove(id);
-       return ResponseEntity.ok("Song " + id + " deleted");
-    }
+       DeleteSongResponsDto response = new DeleteSongResponsDto("Song deleted id: "+id, HttpStatus.OK);
+       return ResponseEntity.ok(response);
+   }
 
 }
