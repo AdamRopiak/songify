@@ -44,13 +44,13 @@ public class SongRestController {
 
     @GetMapping("/songs/{id}")
     public ResponseEntity<SingleSongResponseDto> getSongsById(@PathVariable Integer id, @RequestHeader(required = false) String requestId) {
-       log.info(requestId);
-       String song = database.get(id);
-        if (song == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        log.info(requestId);
+        if(!database.containsKey(id)) {
+            throw new SongNotFoundException("Song with " + id + " not found");
         }
-        SingleSongResponseDto responsList = new SingleSongResponseDto(song);
-        return ResponseEntity.ok(responsList);
+        String song = database.get(id);
+        SingleSongResponseDto respons = new SingleSongResponseDto(song);
+        return ResponseEntity.ok(respons);
     }
 
     @PostMapping("/songs")
