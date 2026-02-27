@@ -2,7 +2,5 @@ package com.songify.song.dto.response;
 
 import com.songify.song.controller.SongEntity;
 
-import java.util.Map;
-
-public record SongResponsDto(Map<Integer, SongEntity> songs) {
+public record GetSongResponseDto(SongEntity song) {
 }
