@@ -11,17 +11,18 @@ import java.util.stream.Collectors;
 @Service
 @Log4j2
 public class SongRetriever {
+
     private final SongRepository songRepository;
 
     public SongRetriever(SongRepository songRepository) {
         this.songRepository = songRepository;
     }
+
     public Map<Integer, SongEntity> findAll() {
         log.info("Retrieve all songs");
         return songRepository.findAll();
     }
     public Map<Integer, SongEntity> findAllLimitedBy(Integer limit) {
-        log.info("Retrieve all songs");
         return songRepository.findAll()
                 .entrySet()
                 .stream()
