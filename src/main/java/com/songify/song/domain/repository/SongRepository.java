@@ -1,27 +1,25 @@
 package com.songify.song.domain.repository;
 
 import com.songify.song.domain.model.SongEntity;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.Repository;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
+import java.util.Optional;
 
-@Repository
-public class SongRepository {
+public interface SongRepository extends Repository<SongEntity, Long> {
+    SongEntity save(SongEntity songEntity);
 
-    Map<Integer, SongEntity> database = new HashMap<>(Map.of(
-            1, new SongEntity("Shawn Menes song", "Shawn Mendes"),
-            2, new SongEntity("Rihiana kap kap", "Rhianna"),
-            3, new SongEntity("Shawn Menes song2", "Metallica"),
-            4, new SongEntity("Rihiana kap kap2", "Kapuś")
-    ));
+    List<SongEntity> findAll();
 
-    public SongEntity saveToDatabase(SongEntity newSong) {
-        database.put(database.size() + 1, newSong);
-        return  newSong;
-    }
+    Optional<SongEntity> findSongEntityById(Long id);
 
-    public Map<Integer, SongEntity> findAll() {
-        return  database;
-    }
+    void deleteById(Long id);
+
+    @Modifying
+    @Query("UPDATE SongEntity s SET s.songName = :#{#newSong.songName}, s.artistName = :#{#newSong.artistName} WHERE s.id =:id")
+    void updateSongById(Long id, SongEntity newSong);
+
+    boolean existsById(Long id);
 }

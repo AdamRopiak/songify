@@ -1,12 +1,13 @@
 package com.songify.song.domain.service;
 
 import com.songify.song.domain.model.SongEntity;
+import com.songify.song.domain.model.SongNotFoundException;
 import com.songify.song.domain.repository.SongRepository;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
-import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @Log4j2
@@ -18,16 +19,26 @@ public class SongRetriever {
         this.songRepository = songRepository;
     }
 
-    public Map<Integer, SongEntity> findAll() {
+    public List<SongEntity> findAll() {
         log.info("Retrieve all songs");
         return songRepository.findAll();
     }
-    public Map<Integer, SongEntity> findAllLimitedBy(Integer limit) {
+    public List<SongEntity> findAllLimitedBy(Integer limit) {
         return songRepository.findAll()
-                .entrySet()
                 .stream()
                 .limit(limit)
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+                .toList();
     }
 
+    public SongEntity findSongById(Long id) {
+        return songRepository.findSongEntityById(id)
+                .orElseThrow( () -> new SongNotFoundException("Song with id: " + id + " not found"));
+    }
+
+    public void existsById(Long id) {
+        if(!songRepository.existsById(id)){
+            throw new SongNotFoundException("Song with id: " + id + " not found");
+        }
+
+    }
 }

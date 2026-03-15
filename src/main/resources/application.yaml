@@ -1,3 +1,16 @@
 spring:
   application:
     name: songify
+  jpa:
+    hibernate:
+      ddl-auto: create  #tworzy tabelę z entity
+    show-sql: true
+  datasource:
+    url: jdbc:postgresql://localhost:54320/postgres
+    username: user
+    password: admin
+    hikari:
+      connection-timeout: 20000
+      maximum-pool-size: 5
+
+

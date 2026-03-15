@@ -7,7 +7,7 @@ import com.songify.song.infrastructure.controller.dto.response.*;
 import com.songify.song.domain.model.SongEntity;
 import org.springframework.http.HttpStatus;
 
-import java.util.Map;
+import java.util.List;
 
 public class SongMapper {
     public static SongEntity mapFromCreateSongRequestDtoToSong(CreateSongRequestDto dto) {
@@ -16,14 +16,14 @@ public class SongMapper {
     public static CreateSongResponseDto mapFromSongToCreateSongResponseDto(SongEntity newSong) {
         return new CreateSongResponseDto(newSong);
     }
-    public static GetAllSongsResponsDto mapFromSongToGetAllSongsResonseDto(Map<Integer, SongEntity> database) {
+    public static GetAllSongsResponsDto mapFromSongToGetAllSongsResonseDto(List<SongEntity> database) {
         return new GetAllSongsResponsDto(database);
     }
     public static GetSongResponseDto mapFromSongtoGetSongResponseDto(SongEntity song) {
         return new GetSongResponseDto(song);
     }
 
-    public static DeleteSongResponsDto mapFromSongToDeleteSongResponseDto(Integer id) {
+    public static DeleteSongResponsDto mapFromSongToDeleteSongResponseDto(Long id) {
         return new DeleteSongResponsDto("You deleted song with id: " + id, HttpStatus.OK);
     }
     public static PutSongResponseDto mapFromSongToPutResponseDto(PutSongRequestDto dto) {
@@ -34,7 +34,7 @@ public class SongMapper {
         return new SongEntity(song.songName(), song.artistName());
     }
     public static PutSongResponseDto mapFromSongToPutSongResponseDto(SongEntity newSong) {
-        return new PutSongResponseDto(newSong.songName(),  newSong.artistName());
+        return new PutSongResponseDto(newSong.getSongName(),  newSong.getArtistName());
     }
     public static SongEntity mapFromPatchSongRequestDtoToSong(PatchSongRequestDto dto) {
         return new SongEntity(dto.songName(), dto.artistName());
