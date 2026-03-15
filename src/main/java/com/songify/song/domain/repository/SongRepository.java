@@ -11,10 +11,14 @@ import java.util.Optional;
 public interface SongRepository extends Repository<SongEntity, Long> {
     SongEntity save(SongEntity songEntity);
 
+    @Query("SELECT s FROM SongEntity s")
     List<SongEntity> findAll();
 
+    @Query("SELECT s FROM SongEntity s WHERE s.id=:id")
     Optional<SongEntity> findSongEntityById(Long id);
 
+    @Modifying
+    @Query("DELETE FROM SongEntity s WHERE s.id=:id" )
     void deleteById(Long id);
 
     @Modifying
