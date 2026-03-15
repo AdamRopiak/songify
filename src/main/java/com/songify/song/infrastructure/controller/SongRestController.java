@@ -89,29 +89,11 @@ public class SongRestController {
 
 
     @PatchMapping("/{id}")
-    public ResponseEntity<PatchSongResponseDto> patchSongResponseEntity(@PathVariable Integer id,
+    public ResponseEntity<PatchSongResponseDto> patchSongResponseEntity(@PathVariable Long id,
                                                                         @RequestBody PatchSongRequestDto request) {
-        List<SongEntity> songRetrieverAll = songRetriever.findAll();
-        if (!songRetrieverAll.contains(id)) {
-            throw new SongNotFoundException("Song with " + id + " not found");
-        }
-        SongEntity songFromDatabase = songRetrieverAll.get(id);
         SongEntity updatedSong = SongMapper.mapFromPatchSongRequestDtoToSong(request);
-        SongEntity.SongEntityBuilder builder = SongEntity.builder();
-        if(request.songName()!=null){
-            builder.songName((request.songName()));
-            log.info("Partially update song");
-        }else{
-            builder.songName(songFromDatabase.getSongName());
-            log.info("Partially update artist");
-        }
-        if(request.artistName()!=null){
-            builder.artistName((request.artistName()));
-        }else{
-            builder.artistName(songFromDatabase.getArtistName());
-        }
-        songAdder.addSong(updatedSong);
-        PatchSongResponseDto body =  SongMapper.mapFromSongTopatchSongRequestResponseDto(updatedSong);
+        SongEntity savedSong = songUpdater.updatePartiallySongById(id, updatedSong);
+        PatchSongResponseDto body =  SongMapper.mapFromSongTopatchSongRequestResponseDto(savedSong);
         return ResponseEntity.ok(body);
     }
 
