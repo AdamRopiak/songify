@@ -13,6 +13,8 @@ import com.songify.song.domain.service.SongUpdater;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,13 +33,8 @@ public class SongRestController {
 
 
     @GetMapping
-    public ResponseEntity<GetAllSongsResponsDto> getAllSongs(@RequestParam(required = false) Integer limit) {
-        List<SongEntity> songRetrieverAllSongs = songRetriever.findAll();
-        if(limit!=null) {
-            List<SongEntity> limitedMap = songRetriever.findAllLimitedBy(limit);
-            GetAllSongsResponsDto response = new GetAllSongsResponsDto(limitedMap);
-                return ResponseEntity.ok(response);
-            }
+    public ResponseEntity<GetAllSongsResponsDto> getAllSongs(@PageableDefault(page = 0, size = 15) Pageable pageable) {
+        List<SongEntity> songRetrieverAllSongs = songRetriever.findAll(pageable);
         GetAllSongsResponsDto responsList = SongMapper.mapFromSongToGetAllSongsResonseDto(songRetrieverAllSongs);
         return ResponseEntity.ok(responsList);
     }
@@ -69,10 +66,10 @@ public class SongRestController {
         return ResponseEntity.ok(response);
     }
 
-    private List<SongEntity> getAll() {
+    /*private List<SongEntity> getAll() {
         List<SongEntity> songRetrieverAll = songRetriever.findAll();
         return songRetrieverAll;
-    }
+    }*/
 
 
     @PutMapping("/{id}")
