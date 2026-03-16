@@ -7,7 +7,6 @@ import com.songify.song.infrastructure.controller.dto.request.PatchSongRequestDt
 import com.songify.song.infrastructure.controller.dto.response.*;
 import com.songify.song.infrastructure.controller.dto.request.CreateSongRequestDto;
 import com.songify.song.infrastructure.controller.dto.request.PutSongRequestDto;
-import com.songify.song.domain.model.SongNotFoundException;
 import com.songify.song.domain.model.SongEntity;
 import com.songify.song.domain.service.SongUpdater;
 import jakarta.validation.Valid;
@@ -53,8 +52,8 @@ public class SongRestController {
     @PostMapping
     public ResponseEntity<CreateSongResponseDto> postNewSong(@RequestBody @Valid CreateSongRequestDto request) {
         SongEntity newSong = SongMapper.mapFromCreateSongRequestDtoToSong(request);
-        songAdder.addSong(newSong);
-        CreateSongResponseDto body = SongMapper.mapFromSongToCreateSongResponseDto(newSong);
+        SongEntity savedSong = songAdder.addSong(newSong);
+        CreateSongResponseDto body = SongMapper.mapFromSongToCreateSongResponseDto(savedSong);
         return ResponseEntity.ok(body);
     }
 

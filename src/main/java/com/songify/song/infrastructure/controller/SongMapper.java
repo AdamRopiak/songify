@@ -10,17 +10,26 @@ import org.springframework.http.HttpStatus;
 import java.util.List;
 
 public class SongMapper {
+
+    public static SongDto mapFromSongToSongDto(SongEntity song) {
+        return new SongDto(song.getId(), song.getSongName(), song.getArtistName());
+    }
     public static SongEntity mapFromCreateSongRequestDtoToSong(CreateSongRequestDto dto) {
         return new SongEntity(dto.songName(), dto.artistName());
     }
     public static CreateSongResponseDto mapFromSongToCreateSongResponseDto(SongEntity newSong) {
-        return new CreateSongResponseDto(newSong);
+        SongDto songDto = SongMapper.mapFromSongToSongDto(newSong);
+        return new CreateSongResponseDto(songDto);
     }
-    public static GetAllSongsResponsDto mapFromSongToGetAllSongsResonseDto(List<SongEntity> database) {
-        return new GetAllSongsResponsDto(database);
+    public static GetAllSongsResponsDto mapFromSongToGetAllSongsResonseDto(List<SongEntity> allSongs) {
+        List<SongDto> songDtos = allSongs.stream()
+                .map(song -> SongMapper.mapFromSongToSongDto(song))
+                .toList();
+        return new GetAllSongsResponsDto(songDtos);
     }
     public static GetSongResponseDto mapFromSongtoGetSongResponseDto(SongEntity song) {
-        return new GetSongResponseDto(song);
+        SongDto songDto = SongMapper.mapFromSongToSongDto(song);
+        return new GetSongResponseDto(songDto);
     }
 
     public static DeleteSongResponsDto mapFromSongToDeleteSongResponseDto(Long id) {
@@ -40,6 +49,7 @@ public class SongMapper {
         return new SongEntity(dto.songName(), dto.artistName());
     }
     public static PatchSongResponseDto mapFromSongTopatchSongRequestResponseDto(SongEntity updatedSong) {
-        return new PatchSongResponseDto(updatedSong);
+        SongDto songDto = SongMapper.mapFromSongToSongDto(updatedSong);
+        return new PatchSongResponseDto(songDto);
     }
 }

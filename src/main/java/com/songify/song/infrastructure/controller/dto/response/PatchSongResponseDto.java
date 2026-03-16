@@ -2,5 +2,5 @@ package com.songify.song.infrastructure.controller.dto.response;
 
 import com.songify.song.domain.model.SongEntity;
 
-public record PatchSongResponseDto(SongEntity updatedSong) {
+public record PatchSongResponseDto(SongDto updatedSong) {
 }

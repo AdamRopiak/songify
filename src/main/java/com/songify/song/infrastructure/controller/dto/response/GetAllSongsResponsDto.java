@@ -5,5 +5,5 @@ import com.songify.song.domain.model.SongEntity;
 import java.util.List;
 import java.util.Map;
 
-public record GetAllSongsResponsDto(List<SongEntity> songs) {
+public record GetAllSongsResponsDto(List<SongDto> songs) {
 }
