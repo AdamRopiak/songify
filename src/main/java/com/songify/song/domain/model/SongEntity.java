@@ -1,37 +1,43 @@
 package com.songify.song.domain.model;
 
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+
+import java.time.Instant;
 
 @Builder
 @Entity
 @Table(name = "song")
 @Getter
 @Setter
-public class SongEntity{
+@NoArgsConstructor
+@AllArgsConstructor
+public class SongEntity extends BaseEnity{
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "song_id_seq")
+    @SequenceGenerator(
+            name = "song_id_seq",
+            sequenceName = "song_id_seq",
+            allocationSize = 1
+    )
+    @Column(name = "id", nullable = false )
     private Long id;
 
     @Column(name="name", nullable = false)
-    String songName;
+    private String songName;
     @Column(name="artist", nullable = false)
-    String artistName;
+    private String artistName;
 
-    public SongEntity() {
-    }
+    private Instant releaseDate;
+
+    private Long duration;
+
+    @Enumerated(EnumType.STRING)
+    private SongLanguage language;
 
     public SongEntity(String songName, String artistName) {
         this.songName = songName;
         this.artistName = artistName;
     }
 
-    public SongEntity(Long id, String songName, String artistName) {
-        this.id = id;
-        this.songName = songName;
-        this.artistName = artistName;
-    }
 }

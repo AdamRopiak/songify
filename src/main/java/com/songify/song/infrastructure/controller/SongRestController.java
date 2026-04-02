@@ -65,10 +65,11 @@ public class SongRestController {
         return ResponseEntity.ok(response);
     }
 
-    /*private List<SongEntity> getAll() {
-        List<SongEntity> songRetrieverAll = songRetriever.findAll();
-        return songRetrieverAll;
-    }*/
+   @GetMapping("/test")
+   public ResponseEntity<GetSongResponseDto> test(){
+        songRetriever.compareSongs();
+        return ResponseEntity.ok().build();
+   }
 
 
     @PutMapping("/{id}")
