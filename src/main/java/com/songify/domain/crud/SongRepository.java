@@ -1,4 +1,4 @@
-package com.songify.domain.crud.song;
+package com.songify.domain.crud;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Modifying;
@@ -22,7 +22,7 @@ public interface SongRepository extends Repository<SongEntity, Long> {
     void deleteById(Long id);
 
     @Modifying
-    @Query("UPDATE SongEntity s SET s.songName = :#{#newSong.songName}, s.artistName = :#{#newSong.artistName} WHERE s.id =:id")
+    @Query("UPDATE SongEntity s SET s.songName = :#{#newSong.songName} WHERE s.id =:id")
     void updateSongById(Long id, SongEntity newSong);
 
     boolean existsById(Long id);

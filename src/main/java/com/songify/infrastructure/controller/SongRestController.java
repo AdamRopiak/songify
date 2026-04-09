@@ -1,7 +1,7 @@
 package com.songify.infrastructure.controller;
 
-import com.songify.domain.crud.song.*;
-import com.songify.domain.crud.song.dto.SongDto;
+import com.songify.domain.crud.SongCrudFacade;
+import com.songify.domain.crud.dto.SongDto;
 import com.songify.infrastructure.controller.dto.request.PatchSongRequestDto;
 import com.songify.infrastructure.controller.dto.response.*;
 import com.songify.infrastructure.controller.dto.request.CreateSongRequestDto;

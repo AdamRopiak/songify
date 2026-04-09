@@ -1,11 +1,10 @@
 package com.songify.infrastructure.controller;
 
-import com.songify.domain.crud.song.dto.SongDto;
+import com.songify.domain.crud.dto.SongDto;
 import com.songify.infrastructure.controller.dto.request.CreateSongRequestDto;
 import com.songify.infrastructure.controller.dto.request.PatchSongRequestDto;
 import com.songify.infrastructure.controller.dto.request.PutSongRequestDto;
 import com.songify.infrastructure.controller.dto.response.*;
-import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 
 import java.util.List;

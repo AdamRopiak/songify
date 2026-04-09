@@ -1,0 +1,21 @@
+-- Sample inserts for the artist_albums table
+INSERT INTO artist_albums (artists_artistid, albums_albumid) VALUES (1, 1);
+INSERT INTO artist_albums (artists_artistid, albums_albumid) VALUES (2, 1);
+INSERT INTO artist_albums (artists_artistid, albums_albumid) VALUES (3, 1);
+INSERT INTO artist_albums (artists_artistid, albums_albumid) VALUES (4, 2);
+INSERT INTO artist_albums (artists_artistid, albums_albumid) VALUES (5, 2);
+INSERT INTO artist_albums (artists_artistid, albums_albumid) VALUES (6, 3);
+INSERT INTO artist_albums (artists_artistid, albums_albumid) VALUES (7, 3);
+INSERT INTO artist_albums (artists_artistid, albums_albumid) VALUES (8, 3);
+INSERT INTO artist_albums (artists_artistid, albums_albumid) VALUES (9, 4);
+INSERT INTO artist_albums (artists_artistid, albums_albumid) VALUES (10, 4);
+INSERT INTO artist_albums (artists_artistid, albums_albumid) VALUES (11, 5);
+INSERT INTO artist_albums (artists_artistid, albums_albumid) VALUES (12, 5);
+INSERT INTO artist_albums (artists_artistid, albums_albumid) VALUES (13, 6);
+INSERT INTO artist_albums (artists_artistid, albums_albumid) VALUES (14, 6);
+INSERT INTO artist_albums (artists_artistid, albums_albumid) VALUES (15, 7);
+INSERT INTO artist_albums (artists_artistid, albums_albumid) VALUES (16, 7);
+INSERT INTO artist_albums (artists_artistid, albums_albumid) VALUES (17, 8);
+INSERT INTO artist_albums (artists_artistid, albums_albumid) VALUES (18, 8);
+INSERT INTO artist_albums (artists_artistid, albums_albumid) VALUES (19, 9);
+INSERT INTO artist_albums (artists_artistid, albums_albumid) VALUES (20, 9);

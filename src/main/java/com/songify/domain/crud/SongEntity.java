@@ -1,4 +1,4 @@
-package com.songify.domain.crud.song;
+package com.songify.domain.crud;
 
 import com.songify.domain.crud.util.BaseEnity;
 import jakarta.persistence.*;
@@ -26,12 +26,13 @@ class SongEntity extends BaseEnity {
 
     @Column(name = "name", nullable = false)
     private String songName;
-    @Column(name = "artist", nullable = false)
-    private String artistName;
 
     private Instant releaseDate;
 
     private Long duration;
+
+    @OneToOne
+    private GenreEntity genre;
 
     @Enumerated(EnumType.STRING)
     private SongLanguage language;
