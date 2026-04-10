@@ -14,6 +14,10 @@ import lombok.Setter;
 @Setter(AccessLevel.PACKAGE)
 class GenreEntity extends BaseEnity {
 
+    GenreEntity(final String genreName) {
+        this.genreName = genreName;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "genre_genreid_seq")
     @SequenceGenerator(
@@ -25,7 +29,7 @@ class GenreEntity extends BaseEnity {
     private Long genreId;
 
     @Column(name = "genrename")
-    private String genrename;
+    private String genreName;
 
 
 }

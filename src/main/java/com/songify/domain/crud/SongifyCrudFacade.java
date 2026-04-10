@@ -1,6 +1,7 @@
 package com.songify.domain.crud;
 
 import com.songify.domain.crud.dto.ArtistDto;
+import com.songify.domain.crud.dto.GenreDto;
 import com.songify.domain.crud.dto.SongDto;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -18,9 +19,14 @@ public class SongifyCrudFacade {
     private final SongUpdater songUpdater;
 
     private final ArtistAdder artistAdder;
+    private final GenreAdder genreAdder;
 
     public ArtistDto addArtist(ArtistRequestDto dto){
         return artistAdder.addArtist(dto.artistName());
+    }
+
+    public GenreDto addGenre(GenreRequestDto dto){
+        return genreAdder.addGenre(dto.genreName());
     }
 
     public List<SongDto> findAll(Pageable pageable) {
