@@ -4,6 +4,8 @@ import com.songify.domain.crud.dto.ArtistDto;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @AllArgsConstructor
 class ArtistAdder {
@@ -15,4 +17,5 @@ class ArtistAdder {
         ArtistEntity savedArtist = artistRepository.save(newArtist);
         return new ArtistDto(savedArtist.getArtistId(), savedArtist.getArtistName());
     }
+
 }

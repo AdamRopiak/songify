@@ -1,16 +1,17 @@
 package com.songify.domain.crud;
 
-import com.songify.domain.crud.dto.ArtistDto;
-import com.songify.domain.crud.dto.GenreDto;
-import com.songify.domain.crud.dto.SongDto;
+import com.songify.domain.crud.dto.*;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 @AllArgsConstructor
+@Transactional
 public class SongifyCrudFacade {
 
     private final SongAdder songAdder;
@@ -19,7 +20,10 @@ public class SongifyCrudFacade {
     private final SongUpdater songUpdater;
 
     private final ArtistAdder artistAdder;
+    private final ArtistRetriever  artistRetriever;
     private final GenreAdder genreAdder;
+    private final AlbumAdder albumAdder;
+    private final AlbumRetriever albumRetriever;
 
     public ArtistDto addArtist(ArtistRequestDto dto){
         return artistAdder.addArtist(dto.artistName());
@@ -29,35 +33,31 @@ public class SongifyCrudFacade {
         return genreAdder.addGenre(dto.genreName());
     }
 
-    public List<SongDto> findAll(Pageable pageable) {
-        return songRetriever.findAll(pageable)
-                .stream()
-                .map(song -> SongDto.builder()
-                        .id(song.getId())
-                        .songName(song.getSongName())
-                        .build())
-                .toList();
+    public AlbumDto addAlbum(AlbumRequestDto dto){
+        return albumAdder.addAlbumWithSong(dto.songId(),dto.albumTitle(), dto.releaseDate());
+    }
+
+    public SongDto addSong(final SongRequestDto dto) {
+        return songAdder.addSong(dto);
+    }
+
+    public Set<ArtistDto> findAllArtists(Pageable pageable) {
+        return artistRetriever.findAllArtist(pageable);
+    }
+
+    public List<SongDto> findAllSongs(Pageable pageable) {
+        return songRetriever.findAll(pageable);
     }
 
     public SongDto findSongDtoById(Long id) {
-        SongEntity song = songRetriever.findSongById(id);
-        return SongDto.builder()
-                .id(song.getId())
-                .songName(song.getSongName())
-                .build();
+        return songRetriever.findSongDtoById(id);
     }
 
-    public SongDto addSong(final SongDto newSong) {
-        String name = newSong.songName();
-        SongEntity validatedAndReadyToSaveSong = new SongEntity(name);
-        SongEntity addedSong = songAdder.addSong(validatedAndReadyToSaveSong);
-        return SongDto.builder()
-                .id(addedSong.getId())
-                .songName(addedSong.getSongName())
-                .build();
+    public AlbumEntityInfo findAlbumByIdWithArtistsAndSongs(Long albumId){
+        return albumRetriever.findByAlbumAndSongsAndArtists(albumId);
     }
 
-    public void deteById(Long id){
+    public void deteteSongById(Long id){
         songRetriever.existsById(id);
         songDeleter.deteById(id);
     }

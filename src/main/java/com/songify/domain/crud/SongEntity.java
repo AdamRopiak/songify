@@ -14,6 +14,18 @@ import java.time.Instant;
 @NoArgsConstructor
 @AllArgsConstructor
 class SongEntity extends BaseEnity {
+
+    public SongEntity(String songName) {
+        this.songName = songName;
+    }
+
+    SongEntity(String songName, Instant releaseDate, Long duration, SongLanguage language) {
+        this.songName = songName;
+        this.releaseDate = releaseDate;
+        this.duration = duration;
+        this.language = language;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "song_id_seq")
     @SequenceGenerator(
@@ -31,14 +43,12 @@ class SongEntity extends BaseEnity {
 
     private Long duration;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     private GenreEntity genre;
 
     @Enumerated(EnumType.STRING)
     private SongLanguage language;
 
-    public SongEntity(String songName) {
-        this.songName = songName;
-    }
+
 
 }

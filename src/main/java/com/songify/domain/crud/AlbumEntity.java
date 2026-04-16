@@ -15,6 +15,10 @@ import java.util.Set;
 @Setter(AccessLevel.PACKAGE)
 class AlbumEntity extends BaseEnity {
 
+    AlbumEntity(String albumTitle) {
+        this.albumTitle = albumTitle;
+    }
+
     @Id
     @Column(name = "albumid")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "album_albumid_seq")
@@ -37,4 +41,8 @@ class AlbumEntity extends BaseEnity {
 
     @ManyToMany(mappedBy = "albums")
     private Set<ArtistEntity> artists = new HashSet<>();
+
+    void addSongToAlbum(final SongEntity song) {
+        songs.add(song);
+    }
 }

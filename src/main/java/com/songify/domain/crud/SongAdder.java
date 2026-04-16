@@ -1,5 +1,8 @@
 package com.songify.domain.crud;
 
+import com.songify.domain.crud.dto.SongDto;
+import com.songify.domain.crud.dto.SongLanguageDto;
+import com.songify.domain.crud.dto.SongRequestDto;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -15,12 +18,13 @@ class SongAdder {
 
     private final SongRepository songRepository;
 
-    SongEntity addSong(final SongEntity newSong) {
+    SongDto addSong(final SongRequestDto newSong) {
+        SongLanguageDto language = newSong.songLanguage();
+        SongLanguage songLanguage = SongLanguage.valueOf(language.name());
+        SongEntity song = new SongEntity(newSong.songName(), newSong.releaseDate(), newSong.songDuration(), songLanguage);
         log.info("Adding new song: " + newSong);
-        newSong.setDuration(200L);
-        newSong.setReleaseDate(Instant.now());
-        SongEntity savedSong = songRepository.save(newSong);
-        return savedSong;
+        SongEntity savedSong = songRepository.save(song);
+        return new SongDto(savedSong.getId(),savedSong.getSongName());
     }
 
 }

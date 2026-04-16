@@ -1,6 +1,6 @@
 package com.songify.infrastructure.crud.genre;
 
-import com.songify.domain.crud.GenreRequestDto;
+import com.songify.domain.crud.dto.GenreRequestDto;
 import com.songify.domain.crud.SongifyCrudFacade;
 import com.songify.domain.crud.dto.GenreDto;
 import lombok.AllArgsConstructor;

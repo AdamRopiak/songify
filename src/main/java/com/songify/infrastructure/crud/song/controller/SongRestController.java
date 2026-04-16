@@ -2,9 +2,9 @@ package com.songify.infrastructure.crud.song.controller;
 
 import com.songify.domain.crud.SongifyCrudFacade;
 import com.songify.domain.crud.dto.SongDto;
+import com.songify.domain.crud.dto.SongRequestDto;
 import com.songify.infrastructure.crud.song.controller.dto.request.PatchSongRequestDto;
 import com.songify.infrastructure.crud.song.controller.dto.response.*;
-import com.songify.infrastructure.crud.song.controller.dto.request.CreateSongRequestDto;
 import com.songify.infrastructure.crud.song.controller.dto.request.PutSongRequestDto;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -27,7 +27,7 @@ public class SongRestController {
 
     @GetMapping
     public ResponseEntity<GetAllSongsResponsDto> getAllSongs(@PageableDefault(page = 0, size = 15) Pageable pageable) {
-        List<SongDto> songRetrieverAllSongs = songifyCrudFacade.findAll(pageable);
+        List<SongDto> songRetrieverAllSongs = songifyCrudFacade.findAllSongs(pageable);
         GetAllSongsResponsDto responsList = SongControllerMapper.mapFromSongToGetAllSongsResonseDto(songRetrieverAllSongs);
         return ResponseEntity.ok(responsList);
     }
@@ -44,9 +44,8 @@ public class SongRestController {
 
 
     @PostMapping
-    public ResponseEntity<CreateSongResponseDto> postNewSong(@RequestBody @Valid CreateSongRequestDto request) {
-        SongDto newSong = SongControllerMapper.mapFromCreateSongRequestDtoToSongDto(request);
-        SongDto savedSong = songifyCrudFacade.addSong(newSong);
+    public ResponseEntity<CreateSongResponseDto> postNewSong(@RequestBody @Valid SongRequestDto request) {
+        SongDto savedSong = songifyCrudFacade.addSong(request);
         CreateSongResponseDto body = SongControllerMapper.mapFromSongToCreateSongResponseDto(savedSong);
         return ResponseEntity.ok(body);
     }
@@ -54,7 +53,7 @@ public class SongRestController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<DeleteSongResponsDto> deleteSongById(@PathVariable Long id) {
-        songifyCrudFacade.deteById(id);
+        songifyCrudFacade.deteteSongById(id);
         DeleteSongResponsDto response = SongControllerMapper.mapFromSongToDeleteSongResponseDto(id);
         return ResponseEntity.ok(response);
     }

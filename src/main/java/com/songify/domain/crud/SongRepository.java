@@ -8,7 +8,7 @@ import org.springframework.data.repository.Repository;
 import java.util.List;
 import java.util.Optional;
 
-public interface SongRepository extends Repository<SongEntity, Long> {
+interface SongRepository extends Repository<SongEntity, Long> {
     SongEntity save(SongEntity songEntity);
 
     @Query("SELECT s FROM SongEntity s")

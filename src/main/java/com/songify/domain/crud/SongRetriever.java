@@ -1,5 +1,6 @@
 package com.songify.domain.crud;
 
+import com.songify.domain.crud.dto.SongDto;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -15,11 +16,25 @@ class SongRetriever {
 
     private final SongRepository songRepository;
 
-    List<SongEntity> findAll (Pageable pageable){
+    List<SongDto> findAll (Pageable pageable){
         log.info("Retrieve all songs");
-        return songRepository.findAll(pageable);
+        return songRepository.findAll(pageable)
+                .stream()
+                .map(song -> SongDto.builder()
+                        .id(song.getId())
+                        .songName(song.getSongName())
+                        .build())
+                .toList();
     }
 
+    SongDto findSongDtoById(Long id){
+        return songRepository.findSongEntityById(id)
+                .map(song -> SongDto.builder()
+                        .id(song.getId())
+                        .songName(song.getSongName())
+                        .build())
+                .orElseThrow(() -> new SongNotFoundException("Song with id: " + id + " not found"));
+    }
     SongEntity findSongById(Long id){
         return songRepository.findSongEntityById(id)
                 .orElseThrow(() -> new SongNotFoundException("Song with id: " + id + " not found"));
