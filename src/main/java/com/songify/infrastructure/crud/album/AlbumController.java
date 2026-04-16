@@ -1,6 +1,6 @@
 package com.songify.infrastructure.crud.album;
 
-import com.songify.domain.crud.dto.AlbumEntityInfo;
+import com.songify.domain.crud.dto.AlbumDtoWithArtistsAndSongs;
 import com.songify.domain.crud.dto.AlbumRequestDto;
 import com.songify.domain.crud.SongifyCrudFacade;
 import com.songify.domain.crud.dto.AlbumDto;
@@ -16,8 +16,8 @@ class AlbumController {
     private final SongifyCrudFacade  songifyCrudFacade;
 
     @GetMapping("/{albumId}")
-    public ResponseEntity<AlbumEntityInfo> getAlbumWithArtistsAndSongs(@PathVariable Long albumId){
-        AlbumEntityInfo albumByIdWithArtistsAndSogs = songifyCrudFacade.findAlbumByIdWithArtistsAndSongs(albumId);
+    public ResponseEntity<AlbumDtoWithArtistsAndSongs> getAlbumWithArtistsAndSongs(@PathVariable Long albumId){
+        AlbumDtoWithArtistsAndSongs albumByIdWithArtistsAndSogs = songifyCrudFacade.findAlbumByIdWithArtistsAndSongs(albumId);
         return ResponseEntity.ok(albumByIdWithArtistsAndSogs);
 
     }

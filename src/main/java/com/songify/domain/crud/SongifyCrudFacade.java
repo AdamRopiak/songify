@@ -53,8 +53,8 @@ public class SongifyCrudFacade {
         return songRetriever.findSongDtoById(id);
     }
 
-    public AlbumEntityInfo findAlbumByIdWithArtistsAndSongs(Long albumId){
-        return albumRetriever.findByAlbumAndSongsAndArtists(albumId);
+    public AlbumDtoWithArtistsAndSongs findAlbumByIdWithArtistsAndSongs(Long albumId){
+        return albumRetriever.findAlbumByIdWithArtistsAndSongs(albumId);
     }
 
     public void deteteSongById(Long id){

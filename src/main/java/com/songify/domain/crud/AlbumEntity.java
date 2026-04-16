@@ -11,8 +11,8 @@ import java.util.Set;
 @Entity
 @Table(name = "album")
 @NoArgsConstructor
-@Getter(AccessLevel.PACKAGE)
-@Setter(AccessLevel.PACKAGE)
+@Getter(AccessLevel.PUBLIC)
+@Setter//(AccessLevel.PACKAGE)
 class AlbumEntity extends BaseEnity {
 
     AlbumEntity(String albumTitle) {
