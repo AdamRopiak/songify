@@ -27,4 +27,9 @@ class ArtistRetriever {
                 .collect(Collectors.toSet());
 
     }
+
+    ArtistEntity findArtistById(Long artistId) {
+        return artistRepository.findArtistById(artistId)
+                .orElseThrow(() -> new ArtistNotFoundException("Artist with id: " + artistId + " not found"));
+    }
 }

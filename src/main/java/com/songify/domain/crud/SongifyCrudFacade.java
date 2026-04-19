@@ -21,6 +21,8 @@ public class SongifyCrudFacade {
 
     private final ArtistAdder artistAdder;
     private final ArtistRetriever  artistRetriever;
+    private final ArtistDeleter artistDeleter;
+
     private final GenreAdder genreAdder;
     private final AlbumAdder albumAdder;
     private final AlbumRetriever albumRetriever;
@@ -82,5 +84,10 @@ public class SongifyCrudFacade {
                 .id(toSave.getId())
                 .songName(toSave.getSongName())
                 .build();
+    }
+
+    public void deleteArtistByIdWithAlbumsAndSongs(Long artistId){
+        artistDeleter.deleteArtistByIdWithAlbumsAndSongs(artistId);
+
     }
 }

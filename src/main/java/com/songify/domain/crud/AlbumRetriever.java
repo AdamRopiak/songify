@@ -44,4 +44,9 @@ class AlbumRetriever {
 
         return new AlbumDtoWithArtistsAndSongs(albumDto, artistsDto, songsDto);
     }
+
+    Set<AlbumEntity> findAlbumByArtists(final Long artistId) {
+        return albumRepository.findAlbumByArtistId(artistId);
+
+    }
 }

@@ -35,7 +35,7 @@ class AlbumEntity extends BaseEnity {
     @Column(name = "relase_date")
     private Instant releaseDate;
 
-    @OneToMany
+    @OneToMany//(orphanRemoval = true)
     @JoinColumn(name = "album_albumid")
     private Set<SongEntity> songs = new HashSet<>();
 
@@ -44,5 +44,10 @@ class AlbumEntity extends BaseEnity {
 
     void addSongToAlbum(final SongEntity song) {
         songs.add(song);
+    }
+
+    void removeArtists(ArtistEntity artist){
+        artists.remove(artist);
+        artist.removeAlbum(this);
     }
 }
