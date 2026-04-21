@@ -25,4 +25,9 @@ interface AlbumRepository extends Repository<AlbumEntity, Long> {
     @Modifying
     @Query("delete from AlbumEntity a where a.albumId in :albumIds")
     int deleteByAlbumIdIn(Collection<Long> albumIds);
+
+    @Query("SELECT a FROM AlbumEntity a WHERE a.albumId = :albumId")
+    Optional<AlbumEntity> findAlbumById(Long albumId);
 }
+
+
