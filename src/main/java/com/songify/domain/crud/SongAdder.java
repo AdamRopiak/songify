@@ -1,6 +1,5 @@
 package com.songify.domain.crud;
 
-import com.songify.domain.crud.dto.GenreDto;
 import com.songify.domain.crud.dto.SongDto;
 import com.songify.domain.crud.dto.SongLanguageDto;
 import com.songify.domain.crud.dto.SongRequestDto;
@@ -9,7 +8,9 @@ import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.util.UUID;
 
 @Log4j2
 @Service
@@ -26,6 +27,14 @@ class SongAdder {
         log.info("Adding new song: " + newSong);
         SongEntity savedSong = songRepository.save(song);
         return new SongDto(savedSong.getId(),savedSong.getSongName());
+    }
+
+    SongEntity addDefaultSongToDefaultAlbum(final SongRequestDto newSong) {
+        SongLanguageDto language = newSong.songLanguage();
+        SongLanguage songLanguage = SongLanguage.valueOf(language.name());
+        SongEntity song = new SongEntity(newSong.songName(), newSong.releaseDate(), newSong.songDuration(), songLanguage);
+        SongEntity savedSong = songRepository.save(song);
+        return savedSong;
     }
 
 }

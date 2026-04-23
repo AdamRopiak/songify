@@ -1,7 +1,7 @@
 package com.songify.domain.crud;
 
 import com.songify.domain.crud.dto.*;
-import com.songify.infrastructure.crud.artist.ArtistRequestDto;
+import com.songify.infrastructure.crud.artist.ArtistUpdateRequestDto;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -31,7 +31,7 @@ public class SongifyCrudFacade {
     private final AlbumAdder albumAdder;
     private final AlbumRetriever albumRetriever;
 
-    public ArtistDto addArtist(ArtistRequestDto dto){
+    public ArtistDto addArtist(ArtistUpdateRequestDto dto){
         return artistAdder.addArtist(dto.artistName());
     }
 
@@ -101,5 +101,10 @@ public class SongifyCrudFacade {
 
     public ArtistDto updateArtistById(Long artistId, String newName) {
         return artistUpdater.updateArtistNameById(artistId, newName);
+    }
+
+    public ArtistDto addArtistWithDefaultAlbumAndSong(ArtistRequestDto artistRequestDto){
+        return artistAdder.addArtistWithDefaultAlbumAndSong(artistRequestDto);
+
     }
 }

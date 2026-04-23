@@ -2,6 +2,7 @@ package com.songify.infrastructure.crud.artist;
 
 import com.songify.domain.crud.SongifyCrudFacade;
 import com.songify.domain.crud.dto.ArtistDto;
+import com.songify.domain.crud.dto.ArtistRequestDto;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -26,7 +27,7 @@ class ArtistController {
     }
 
     @PostMapping
-    public ResponseEntity<ArtistDto> postNewArtist(@RequestBody ArtistRequestDto requestDto) {
+    public ResponseEntity<ArtistDto> postNewArtist(@RequestBody ArtistUpdateRequestDto requestDto) {
         ArtistDto artistDto = songifyCrudFacade.addArtist(requestDto);
         return ResponseEntity.ok(artistDto);
     }
@@ -45,9 +46,15 @@ class ArtistController {
 
     @PatchMapping("/{artistId}")
     ResponseEntity<ArtistDto> updateArtistName(@PathVariable Long artistId,
-                                                       @Valid @RequestBody ArtistRequestDto artistRequestDto){
-        ArtistDto artistDto = songifyCrudFacade.updateArtistById(artistId, artistRequestDto.artistName());
+                                                       @Valid @RequestBody ArtistUpdateRequestDto artistUpdateRequestDto){
+        ArtistDto artistDto = songifyCrudFacade.updateArtistById(artistId, artistUpdateRequestDto.artistName());
         return ResponseEntity.ok(artistDto);
+    }
+
+    @PostMapping("/album/song")
+    ResponseEntity<ArtistDto> addArtistWithDefaultSongAndAlbum(@RequestBody ArtistRequestDto requestDto){
+        ArtistDto newArtist = songifyCrudFacade.addArtistWithDefaultAlbumAndSong(requestDto);
+        return ResponseEntity.ok(newArtist);
     }
 
 }

@@ -25,4 +25,12 @@ class AlbumAdder {
 
         return new AlbumDto(savedAlbum.getAlbumId(), savedAlbum.getAlbumTitle());
     }
+
+    AlbumEntity addAlbumWithSong(String albumTitle, Instant releaseDate) {
+        AlbumEntity newAlbum = new AlbumEntity();
+        newAlbum.setAlbumTitle(albumTitle);
+        newAlbum.setReleaseDate(releaseDate);
+        return albumRepository.save(newAlbum);
+
+    }
 }
