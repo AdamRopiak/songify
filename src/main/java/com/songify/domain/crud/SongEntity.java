@@ -8,7 +8,11 @@ import java.time.Instant;
 
 @Builder
 @Entity
-@Table(name = "song")
+@Table(name = "song",
+        indexes = @Index(
+                name = "idx_song_name",
+                columnList = "name"
+        ))
 @Getter
 @Setter
 @NoArgsConstructor
