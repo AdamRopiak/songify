@@ -16,8 +16,11 @@ import java.util.UUID;
 class ArtistAdder {
 
     private final ArtistRepository artistRepository;
-    private final SongAdder songAdder;
     private final AlbumAdder albumAdder;
+    private final SongAdder songAdder;
+
+
+
 
     ArtistDto addArtist(String artistName) {
         ArtistEntity newArtist = new ArtistEntity(artistName);

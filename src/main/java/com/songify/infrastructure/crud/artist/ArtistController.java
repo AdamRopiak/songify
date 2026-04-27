@@ -27,7 +27,7 @@ class ArtistController {
     }
 
     @PostMapping
-    public ResponseEntity<ArtistDto> postNewArtist(@RequestBody ArtistUpdateRequestDto requestDto) {
+    public ResponseEntity<ArtistDto> postNewArtist(@RequestBody ArtistRequestDto requestDto) {
         ArtistDto artistDto = songifyCrudFacade.addArtist(requestDto);
         return ResponseEntity.ok(artistDto);
     }

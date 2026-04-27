@@ -10,9 +10,9 @@ import java.time.Instant;
 @AllArgsConstructor
 class AlbumAdder {
 
-    AlbumRepository albumRepository;
     private final SongRetriever songRetriever;
-    private final AlbumRepository repository;
+    private final AlbumRepository albumRepository;
+
 
     AlbumDto addAlbumWithSong(Long songId, String albumTitle, Instant releaseDate) {
         SongEntity songById = songRetriever.findSongById(songId);

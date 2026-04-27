@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 class SongUpdater {
 
     private final SongRepository songRepository;
-    private final SongRetriever songRetriever;
 
 
     public void updateSongById(Long id, SongEntity newSong) {

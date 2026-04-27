@@ -12,9 +12,10 @@ import java.util.Set;
 @Transactional
 @AllArgsConstructor(access = lombok.AccessLevel.PACKAGE)
 class SongDeleter {
+
     private final SongRepository songRepository;
     private final SongRetriever songRetriever;
-
+    private final GenreDeleter genreDeleter;
 
    void deteById(Long id) {
         log.info("Deleting song: " + id);
