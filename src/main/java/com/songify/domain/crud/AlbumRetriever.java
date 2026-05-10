@@ -8,7 +8,6 @@ import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -52,7 +51,30 @@ class AlbumRetriever {
 
     AlbumEntity findByAlbumId(final Long albumId) {
         return albumRepository.findAlbumById(albumId)
-                .orElseThrow(() -> new ArtistNotFoundException("Album with id: " + albumId + " not found"));
+                .orElseThrow(() -> new AlbumNotFoundException("Album with id: " + albumId + " not found"));
     }
+
+    long countArtistsByAlbumId(Long albumId) {
+        return findByAlbumId(albumId)
+                .getArtists()
+                .size();
+    }
+
+    AlbumDto findDtoById(Long albumId) {
+        AlbumEntity album = findByAlbumId(albumId);
+        return new AlbumDto(
+                album.getAlbumId(),
+                album.getAlbumTitle()
+        );
+    }
+
+    Set<AlbumDto> findAllAlbums() {
+       return albumRepository.findAllAlbums()
+               .stream()
+               .map(album -> new AlbumDto(album.getAlbumId(), album.getAlbumTitle()))
+               .collect(Collectors.toSet());
+    }
+
+
 }
 

@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -14,12 +16,14 @@ class AlbumAdder {
     private final AlbumRepository albumRepository;
 
 
-    AlbumDto addAlbumWithSong(Long songId, String albumTitle, Instant releaseDate) {
-        SongEntity songById = songRetriever.findSongById(songId);
-
+    AlbumDto addAlbumWithSong(Set<Long> songIds, String albumTitle, Instant releaseDate) {
+        //SongEntity songById = songRetriever.findSongById(songIds);
+        Set<SongEntity> songs = songIds.stream()
+                .map(songRetriever::findSongById)
+                .collect(Collectors.toSet());
         AlbumEntity newAlbum = new AlbumEntity();
         newAlbum.setAlbumTitle(albumTitle);
-        newAlbum.addSongToAlbum(songById);
+        newAlbum.addSongsToAlbum(songs);
         newAlbum.setReleaseDate(releaseDate);
         AlbumEntity savedAlbum = albumRepository.save(newAlbum);
 

@@ -29,9 +29,7 @@ class ArtistDeleter {
             return;
         }
 
-        artistAlbums.stream()
-                .filter(album -> album.getArtists().size() >= 2)
-                .forEach(album -> album.removeArtists(artist));
+
 
         Set<AlbumEntity> albumsWithOnlyOneArtist = artistAlbums.stream()
                 .filter(album -> album.getArtists().size() == 1)
@@ -48,6 +46,10 @@ class ArtistDeleter {
                 .map(AlbumEntity::getAlbumId)
                 .collect(Collectors.toSet());
         albumDeleter.deleteAllAlbumsByIds(albumsIdsToDelete);
+
+        artistAlbums.stream()
+                .filter(album -> album.getArtists().size() >= 2)
+                .forEach(album -> album.removeArtists(artist));
 
         artistRepository.deleteByArtistId(artistId);
 

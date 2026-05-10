@@ -1,7 +1,6 @@
 package com.songify.domain.crud;
 
 import com.songify.domain.crud.dto.*;
-import com.songify.infrastructure.crud.artist.ArtistUpdateRequestDto;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -39,8 +38,8 @@ public class SongifyCrudFacade {
         return genreAdder.addGenre(dto.genreName());
     }
 
-    public AlbumDto addAlbum(AlbumRequestDto dto){
-        return albumAdder.addAlbumWithSong(dto.songId(),dto.albumTitle(), dto.releaseDate());
+    public AlbumDto addAlbumWithSong(AlbumRequestDto dto){
+        return albumAdder.addAlbumWithSong(dto.songIds(),dto.albumTitle(), dto.releaseDate());
     }
 
     public SongDto addSong(final SongRequestDto dto) {
@@ -107,4 +106,21 @@ public class SongifyCrudFacade {
         return artistAdder.addArtistWithDefaultAlbumAndSong(artistRequestDto);
 
     }
+
+    public Set<AlbumEntity> findAlbumsByArtistId(Long artistId) {
+        return albumRetriever.findAlbumByArtists(artistId);
+    }
+
+    Long countArtistsByAlbumId(final Long albumId) {
+        return albumRetriever.countArtistsByAlbumId(albumId);
+    }
+
+    AlbumDto findAlbumById(final Long albumId) {
+        return albumRetriever.findDtoById(albumId);
+    }
+
+    public Set<AlbumDto> findAllAlbums() {
+        return albumRetriever.findAllAlbums();
+    }
+
 }

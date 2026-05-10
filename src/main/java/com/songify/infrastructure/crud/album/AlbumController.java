@@ -24,7 +24,7 @@ class AlbumController {
 
     @PostMapping
     public ResponseEntity<AlbumDto> postNewArtist(@RequestBody AlbumRequestDto requestDto) {
-        AlbumDto albumDto = songifyCrudFacade.addAlbum(requestDto);
+        AlbumDto albumDto = songifyCrudFacade.addAlbumWithSong(requestDto);
         return ResponseEntity.ok(albumDto);
     }
 
