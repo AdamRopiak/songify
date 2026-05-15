@@ -47,7 +47,7 @@ class InMemoryAlbumRepository implements AlbumRepository{
     }
 
     @Override
-    public Set<AlbumEntity> findAllAlbums() {
+    public Set<AlbumEntity> findAll() {
         return new HashSet<>(db.values());
     }
 }

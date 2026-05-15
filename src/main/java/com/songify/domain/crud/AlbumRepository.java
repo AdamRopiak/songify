@@ -1,6 +1,6 @@
 package com.songify.domain.crud;
 
-import org.apache.logging.log4j.simple.internal.SimpleProvider;
+
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.Repository;
@@ -30,7 +30,7 @@ interface AlbumRepository extends Repository<AlbumEntity, Long> {
     @Query("SELECT a FROM AlbumEntity a WHERE a.albumId = :albumId")
     Optional<AlbumEntity> findAlbumById(Long albumId);
 
-    Set<AlbumEntity>findAllAlbums();
+    Set<AlbumEntity> findAll();
 
 }
 

@@ -69,7 +69,7 @@ class AlbumRetriever {
     }
 
     Set<AlbumDto> findAllAlbums() {
-       return albumRepository.findAllAlbums()
+       return albumRepository.findAll()
                .stream()
                .map(album -> new AlbumDto(album.getAlbumId(), album.getAlbumTitle()))
                .collect(Collectors.toSet());
