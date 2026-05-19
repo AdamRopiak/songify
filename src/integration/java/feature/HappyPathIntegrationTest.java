@@ -86,6 +86,17 @@ class HappyPathIntegrationTest {
                 .andExpect(jsonPath("$.genres[0].genreId", is(1)))
                 .andExpect(jsonPath("$.genres[0].genreName", is("default")));
 
-
+//5. when I post to /genre with Genre "Rap" then Genre "Rap" is returned with id 2
+        mockMvc.perform(post("/genres")
+                .content("""
+                        {
+                            "genreName": "Rap"
+                        }
+                        """.trim())
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.genreId", is(2)))
+                .andExpect(jsonPath("$.genreName", is("Rap")));
+        System.out.println();
     }
 }
