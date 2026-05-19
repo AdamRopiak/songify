@@ -32,7 +32,7 @@ class AlbumEntity extends BaseEnity {
     @Column(name = "albumtitle")
     private String albumTitle;
 
-    @Column(name = "relase_date")
+    @Column(name = "release_date")
     private Instant releaseDate;
 
     @OneToMany//(orphanRemoval = true)

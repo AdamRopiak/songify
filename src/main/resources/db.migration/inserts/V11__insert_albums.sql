@@ -1,4 +1,4 @@
-INSERT INTO album (albumtitle, relase_date)
+INSERT INTO album (albumtitle, release_date)
 VALUES
     ('Album 1', '2023-01-15 12:00:00'),
     ('Album 2', '2023-03-20 14:30:00'),

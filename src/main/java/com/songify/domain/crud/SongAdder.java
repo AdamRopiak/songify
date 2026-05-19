@@ -1,5 +1,6 @@
 package com.songify.domain.crud;
 
+import com.songify.domain.crud.dto.GenreDto;
 import com.songify.domain.crud.dto.SongDto;
 import com.songify.domain.crud.dto.SongLanguageDto;
 import com.songify.domain.crud.dto.SongRequestDto;
@@ -19,6 +20,7 @@ import java.util.UUID;
 class SongAdder {
 
     private final SongRepository songRepository;
+    private final GenreAssigner genreAssigner;
 
     SongDto addSong(final SongRequestDto newSong) {
         SongLanguageDto language = newSong.songLanguage();
@@ -26,7 +28,8 @@ class SongAdder {
         SongEntity song = new SongEntity(newSong.songName(), newSong.releaseDate(), newSong.songDuration(), songLanguage);
         log.info("Adding new song: " + newSong);
         SongEntity savedSong = songRepository.save(song);
-        return new SongDto(savedSong.getId(),savedSong.getSongName());
+        genreAssigner.assignDefaultGenreToSong(song.getId());
+        return new SongDto(savedSong.getId(),savedSong.getSongName());//,new GenreDto(savedSong.getGenre().getGenreId(), savedSong.getGenre().getGenreName()));
     }
 
     SongEntity addDefaultSongToDefaultAlbum(final SongRequestDto newSong) {

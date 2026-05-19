@@ -18,6 +18,11 @@ class GenreEntity extends BaseEnity {
         this.genreName = genreName;
     }
 
+    public GenreEntity(Long genreId, String genreName) {
+        this.genreId = genreId;
+        this.genreName = genreName;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "genre_genreid_seq")
     @SequenceGenerator(

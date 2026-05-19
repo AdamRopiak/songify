@@ -26,6 +26,7 @@ public class SongifyCrudFacade {
     private final ArtistUpdater artistUpdater;
 
     private final GenreAdder genreAdder;
+    private final GenreRetriever genreRetriever;
 
     private final AlbumAdder albumAdder;
     private final AlbumRetriever albumRetriever;
@@ -123,4 +124,7 @@ public class SongifyCrudFacade {
         return albumRetriever.findAllAlbums();
     }
 
+    public Set<GenreDto> getAllGenres() {
+        return genreRetriever.findAllGenres();
+    }
 }
