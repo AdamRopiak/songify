@@ -4,7 +4,7 @@ import lombok.Builder;
 
 @Builder
 public record SongDto (Long id,
-                       String songName
-                       //GenreDto genreDto
+                       String songName,
+                       GenreDto genreDto
                        ) {
 }

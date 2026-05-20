@@ -32,6 +32,13 @@ interface AlbumRepository extends Repository<AlbumEntity, Long> {
 
     Set<AlbumEntity> findAll();
 
+    @Query("""
+            SELECT a FROM AlbumEntity a
+            join fetch a.songs songs
+            join fetch a.artists artists
+            WHERE a.albumId = :albumId
+""")
+    Optional<AlbumInfo> findAlbumByIdWithSongsAndArtists(Long albumId);
 }
 
 

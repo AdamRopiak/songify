@@ -19,11 +19,11 @@ class AlbumRetriever {
 
     private AlbumRepository albumRepository;
 
-    AlbumDtoWithArtistsAndSongs findAlbumByIdWithArtistsAndSongs(final Long albumId) {
-      AlbumEntity album =  albumRepository.findByAlbumId(albumId)
+    AlbumInfo findAlbumByIdWithArtistsAndSongs(final Long albumId) {
+      return albumRepository.findAlbumByIdWithSongsAndArtists(albumId)
               .orElseThrow(() -> new AlbumNotFoundException("Album with id " + albumId + " not found"));
 
-       Set<ArtistEntity> artists = album.getArtists();
+/*       Set<ArtistEntity> artists = album.getArtists();
         Set<SongEntity> songs = album.getSongs();
 
         AlbumDto albumDto = new AlbumDto(album.getAlbumId(), album.getAlbumTitle());
@@ -41,7 +41,7 @@ class AlbumRetriever {
                 ))
                 .collect(Collectors.toSet());
 
-        return new AlbumDtoWithArtistsAndSongs(albumDto, artistsDto, songsDto);
+        return new AlbumDtoWithArtistsAndSongs(albumDto, artistsDto, songsDto);*/
     }
 
     Set<AlbumEntity> findAlbumByArtists(final Long artistId) {

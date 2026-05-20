@@ -29,7 +29,7 @@ class SongAdder {
         log.info("Adding new song: " + newSong);
         SongEntity savedSong = songRepository.save(song);
         genreAssigner.assignDefaultGenreToSong(song.getId());
-        return new SongDto(savedSong.getId(),savedSong.getSongName());//,new GenreDto(savedSong.getGenre().getGenreId(), savedSong.getGenre().getGenreName()));
+        return new SongDto(savedSong.getId(),savedSong.getSongName(),new GenreDto(savedSong.getGenre().getGenreId(), savedSong.getGenre().getGenreName()));
     }
 
     SongEntity addDefaultSongToDefaultAlbum(final SongRequestDto newSong) {

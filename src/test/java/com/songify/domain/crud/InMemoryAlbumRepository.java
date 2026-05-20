@@ -50,4 +50,9 @@ class InMemoryAlbumRepository implements AlbumRepository{
     public Set<AlbumEntity> findAll() {
         return new HashSet<>(db.values());
     }
+
+    @Override
+    public Optional<AlbumInfo> findAlbumByIdWithSongsAndArtists(Long albumId) {
+        return Optional.empty();
+    }
 }

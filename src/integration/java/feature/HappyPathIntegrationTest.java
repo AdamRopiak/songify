@@ -53,7 +53,8 @@ class HappyPathIntegrationTest {
                           "songName": "Till i collapse",
                           "releaseDate": "2026-05-18T16:07:44.866Z",
                           "songDuration": 0,
-                          "songLanguage": "ENGLISH"
+                          "songLanguage": "ENGLISH",
+                          "genreId": 1
                         }
                         """.trim())
                 .contentType(MediaType.APPLICATION_JSON))
@@ -97,6 +98,9 @@ class HappyPathIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.genreId", is(2)))
                 .andExpect(jsonPath("$.genreName", is("Rap")));
-        System.out.println();
+
+//6. when I go to /song/1 then I can see default genre
+/*        mockMvc.perform(get("/songs/1")
+                .contentType(MediaType.APPLICATION_JSON))*/
     }
 }
