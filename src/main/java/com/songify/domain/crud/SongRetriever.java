@@ -36,6 +36,7 @@ class SongRetriever {
                 .map(song -> SongDto.builder()
                         .id(song.getId())
                         .songName(song.getSongName())
+                        .genreDto(new GenreDto(song.getGenre().getGenreId(), song.getGenre().getGenreName()))
                         .build())
                 .orElseThrow(() -> new SongNotFoundException("Song with id: " + id + " not found"));
     }
