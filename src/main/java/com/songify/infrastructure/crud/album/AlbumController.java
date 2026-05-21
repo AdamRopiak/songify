@@ -9,9 +9,11 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Set;
+
 @RestController
 @AllArgsConstructor
-@RequestMapping("/album")
+@RequestMapping("/albums")
 class AlbumController {
 
     private final SongifyCrudFacade  songifyCrudFacade;
@@ -20,6 +22,13 @@ class AlbumController {
     public ResponseEntity<AlbumInfo> getAlbumWithArtistsAndSongs(@PathVariable Long albumId){
         AlbumInfo albumByIdWithArtistsAndSogs = songifyCrudFacade.findAlbumByIdWithArtistsAndSongs(albumId);
         return ResponseEntity.ok(albumByIdWithArtistsAndSogs);
+
+    }
+    @GetMapping
+    public ResponseEntity<AllAlbumsDto> getAllAlbums(){
+        Set<AlbumDto> allAlbums = songifyCrudFacade.findAllAlbums();
+        AllAlbumsDto allAlbumsDto = new AllAlbumsDto(allAlbums);
+        return ResponseEntity.ok(allAlbumsDto);
 
     }
 

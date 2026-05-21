@@ -27,6 +27,7 @@ public class SongifyCrudFacade {
 
     private final GenreAdder genreAdder;
     private final GenreRetriever genreRetriever;
+    private final GenreAssigner genreAssigner;
 
     private final AlbumAdder albumAdder;
     private final AlbumRetriever albumRetriever;
@@ -126,5 +127,9 @@ public class SongifyCrudFacade {
 
     public Set<GenreDto> getAllGenres() {
         return genreRetriever.findAllGenres();
+    }
+
+    public void assingGenreToSong(Long gerneId, Long songId) {
+        genreAssigner.assignGenreToSong(gerneId, songId);
     }
 }

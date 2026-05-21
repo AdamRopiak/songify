@@ -16,8 +16,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.is;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -106,5 +105,28 @@ class HappyPathIntegrationTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.song.genreDto.genreName", is("default")))
                 .andExpect(jsonPath("$.song.genreDto.genreId", is(1)));
+
+//7. when I put to /song/1/genre/2 then Genre with id 2 ("Rap") is added to Song with id 1 ("Til i collapse")
+        mockMvc.perform(put("/songs/1/genres/2")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", is("Updated")));
+
+//8. when I go to /song/1 then I can see "Rap" genre
+        mockMvc.perform(get("/songs/1")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.song.genreDto.genreName", is("Rap")));
+//9. when I put to /song/2/genre/1 then Genre with id 1 ("Rap") is added to Song with id 2 ("Lose Yourself")
+        mockMvc.perform(put("/songs/2/genres/2")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", is("Updated")));
+//10. when I go to /albums then I can see no albums
+        mockMvc.perform(get("/albums")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.allAlbums", empty()));
+
     }
 }

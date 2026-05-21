@@ -69,6 +69,12 @@ public class SongRestController {
         PutSongResponseDto body = SongControllerMapper.mapFromSongToPutSongResponseDto(newSong);
         return ResponseEntity.ok(body);
     }
+    @PutMapping("/{songId}/genres/{genreId}")
+    public ResponseEntity<String> assingGenreToSong(@PathVariable Long songId,
+                                                    @PathVariable Long genreId){
+        songifyCrudFacade.assingGenreToSong(genreId, songId);
+        return ResponseEntity.ok("Updated");
+    }
 
 
 
