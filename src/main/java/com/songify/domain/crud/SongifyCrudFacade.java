@@ -109,8 +109,8 @@ public class SongifyCrudFacade {
 
     }
 
-    public Set<AlbumEntity> findAlbumsByArtistId(Long artistId) {
-        return albumRetriever.findAlbumByArtists(artistId);
+    public Set<AlbumDto> findAlbumsByArtistId(Long artistId) {
+        return albumRetriever.findAlbumsDtoByArtistId(artistId);
     }
 
     Long countArtistsByAlbumId(final Long albumId) {

@@ -14,8 +14,7 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-import static org.hamcrest.Matchers.empty;
-import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -62,7 +61,7 @@ class HappyPathIntegrationTest {
                 .andExpect(jsonPath("$.song.songName",is("Till i collapse")))
                 .andExpect(jsonPath("$.song.genreDto.genreId",is(1)))
                 .andExpect(jsonPath("$.song.genreDto.genreName", is("default")));
-        ;
+
 
 //3. when I post to /song with Song "Lose Yourself" then Song "Lose Yourself" is returned with id 2
         mockMvc.perform(post("/songs")
@@ -128,5 +127,28 @@ class HappyPathIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.allAlbums", empty()));
 
+//11. when I post to /albums with Album "EminemAlbum1" and Song with id 1 then Album "EminemAlbum1" is returned with id 1
+        mockMvc.perform(post("/albums")
+                .content("""
+                        {
+                          "albumTitle": "EminemAlbum1",
+                          "releaseDate": "2026-05-24T17:16:16.680Z",
+                          "songIds": [
+                           1
+                          ]
+                        }
+                        """.trim())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.albumId", is(1)))
+                .andExpect(jsonPath("$.albumTitle", is("EminemAlbum1")))
+                .andExpect(jsonPath("$.songsIds", containsInAnyOrder(1)));
+
+//12. when I go to /albums/1 then I can not see any albums because there is no artist in system
+        mockMvc.perform(get("/albums/1")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.message", is("Album with id 1 not found")))
+                .andExpect(jsonPath("$.status", is("NOT_FOUND")));
     }
 }

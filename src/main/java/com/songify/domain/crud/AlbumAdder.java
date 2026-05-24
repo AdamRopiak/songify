@@ -26,8 +26,7 @@ class AlbumAdder {
         newAlbum.addSongsToAlbum(songs);
         newAlbum.setReleaseDate(releaseDate);
         AlbumEntity savedAlbum = albumRepository.save(newAlbum);
-
-        return new AlbumDto(savedAlbum.getAlbumId(), savedAlbum.getAlbumTitle());
+        return new AlbumDto(savedAlbum.getAlbumId(), savedAlbum.getAlbumTitle(), savedAlbum.getSongsIds());
     }
 
     AlbumEntity addAlbumWithSong(String albumTitle, Instant releaseDate) {

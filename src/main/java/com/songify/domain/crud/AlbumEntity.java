@@ -7,6 +7,7 @@ import lombok.*;
 import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "album")
@@ -57,5 +58,11 @@ class AlbumEntity extends BaseEnity {
 
     void addArtist(final ArtistEntity artist) {
         artists.add(artist);
+    }
+
+    public Set<Long> getSongsIds() {
+        return this.songs.stream()
+                .map(SongEntity::getId)
+                .collect(Collectors.toSet());
     }
 }
