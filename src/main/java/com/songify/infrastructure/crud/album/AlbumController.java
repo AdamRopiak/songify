@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.rmi.AlreadyBoundException;
 import java.util.Set;
 
 @RestController
@@ -37,6 +38,14 @@ class AlbumController {
         AlbumDto albumDto = songifyCrudFacade.addAlbumWithSong(requestDto);
         return ResponseEntity.ok(albumDto);
     }
+
+    @PutMapping("/{albumId}/songs/{songId}")
+    public ResponseEntity<AlbumDto> addSongToAlbum(@PathVariable Long albumId, @PathVariable Long songId){
+        AlbumDto albumDto = songifyCrudFacade.addSongToAlbum(albumId, songId);
+        return ResponseEntity.ok(albumDto);
+    }
+
+
 
 
 }

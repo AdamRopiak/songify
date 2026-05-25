@@ -168,5 +168,28 @@ class HappyPathIntegrationTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", is("Artist with id: 1 has been added to album with id: 1")));
+
+//15.  when I go to /albums/1 then I can see album with single song with id 1 and single artist with id 1
+        mockMvc.perform(get("/albums/1")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.songs[*].id", containsInAnyOrder(1)))
+                .andExpect(jsonPath("$.artists[*].artistId", containsInAnyOrder(1)))
+                .andExpect(jsonPath( "$.artists", hasSize(1)));
+
+//16. when I put to /albums/1/songs/2 then Song with id 2 ("Lose Yourself") is added to Album with id 1 ("EminemAlbum1")
+        mockMvc.perform(put("/albums/1/songs/2")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.albumId", is(1)))
+                .andExpect(jsonPath("$.albumTitle", is("EminemAlbum1")))
+                .andExpect(jsonPath("$.songsIds[*]", containsInAnyOrder(1,2)));
+
+//17. when I go to /albums/1 then I can see album with 2 songs (id1 and id2)
+        mockMvc.perform(get("/albums/1")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.songs[*].id", containsInAnyOrder(1, 2)))
+                .andExpect(jsonPath("$.artists[*].artistId", containsInAnyOrder(1)));
     }
 }
