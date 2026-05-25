@@ -150,5 +150,23 @@ class HappyPathIntegrationTest {
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.message", is("Album with id 1 not found")))
                 .andExpect(jsonPath("$.status", is("NOT_FOUND")));
+
+//13. when I post to /artists with Artist "Eminem" then Artist "Eminem" is returned with id 1
+        mockMvc.perform(post("/artists")
+                        .content("""
+                                {
+                                        "artistName": "Eminem"
+                                }
+                        """.trim())
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.artistId", is(1)))
+                .andExpect(jsonPath("$.artistName", is("Eminem")));
+
+// 14. when I put to /artists/1/albums/1 then Artist with id 1 ("Eminem") is added to Album with id 1 ("EminemAlbum1")
+        mockMvc.perform(put("/artists/1/albums/1")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", is("Artist with id: 1 has been added to album with id: 1")));
     }
 }
