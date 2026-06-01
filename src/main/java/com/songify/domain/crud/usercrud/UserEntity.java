@@ -23,6 +23,7 @@ public class UserEntity extends BaseEnity {
             sequenceName = "users_id_seq",
             allocationSize = 1
     )
+    @Column(name="userid")
     private Long userId;
 
     @Column(nullable = false, unique = true)
