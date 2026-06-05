@@ -1,6 +1,6 @@
 package com.songify.infrastructure.security;
 
-import com.songify.domain.crud.usercrud.UserEntity;
+import com.songify.domain.usercrud.UserEntity;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

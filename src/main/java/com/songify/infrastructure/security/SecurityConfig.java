@@ -1,17 +1,17 @@
 package com.songify.infrastructure.security;
 
-import com.songify.domain.crud.usercrud.UserRepository;
+import com.songify.domain.usercrud.UserRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.provisioning.UserDetailsManager;
 
 @Configuration
 public class SecurityConfig {
     @Bean
-    public UserDetailsServiceImpl userDetailsService(UserRepository userRepository){
-        return new UserDetailsServiceImpl(userRepository);
+    public UserDetailsManager userDetailsService(UserRepository userRepository){
+        return new UserDetailsServiceImpl(userRepository, passwordEncoder());
     }
 
     @Bean

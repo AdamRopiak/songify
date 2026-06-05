@@ -1,4 +1,4 @@
-package com.songify.domain.crud.usercrud;
+package com.songify.domain.usercrud;
 
 import org.springframework.data.repository.Repository;
 

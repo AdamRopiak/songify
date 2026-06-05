@@ -1,4 +1,4 @@
-package com.songify.domain.crud.usercrud;
+package com.songify.domain.usercrud;
 
 import com.songify.domain.crud.util.BaseEnity;
 import jakarta.persistence.*;
