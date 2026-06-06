@@ -17,10 +17,10 @@ import java.util.HashSet;
 public class UserEntity extends BaseEnity {
 
     @Id
-    @GeneratedValue(generator = "users_id_seq", strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(generator = "users_userid_seq", strategy = GenerationType.SEQUENCE)
     @SequenceGenerator(
-            name = "users_id_seq",
-            sequenceName = "users_id_seq",
+            name = "users_userid_seq",
+            sequenceName = "users_userid_seq",
             allocationSize = 1
     )
     @Column(name="userid")
