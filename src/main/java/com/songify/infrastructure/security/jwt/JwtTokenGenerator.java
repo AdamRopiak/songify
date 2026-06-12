@@ -1,6 +1,7 @@
 package com.songify.infrastructure.security.jwt;
 
 import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
 import com.songify.infrastructure.security.SecurityUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -15,9 +16,12 @@ import java.util.List;
 @RequiredArgsConstructor
 class JwtTokenGenerator {
 
+    public final String ROLES_CLAIM_NAME =  "roles";
+
     private final AuthenticationManager authenticationManager;
     private final Clock clock;
     private final JwtConfigurationProperties properties;
+
 
     public String authenticateAndGenerateToken(String username, String password) {
         UsernamePasswordAuthenticationToken authenticate = new UsernamePasswordAuthenticationToken(username, password);
@@ -25,12 +29,13 @@ class JwtTokenGenerator {
         SecurityUser securityUser = (SecurityUser) authentication.getPrincipal();
         Instant issuedAt = LocalDateTime.now(clock).toInstant(ZoneOffset.UTC);
         Instant expireAt = issuedAt.plus(Duration.ofMinutes(properties.expirationMinutes()));
+        Algorithm algorithm = Algorithm.HMAC256(properties.secret());
         return JWT.create()
                 .withSubject(securityUser.getUsername())
                 .withIssuedAt(issuedAt)
                 .withExpiresAt(expireAt)
                 .withIssuer(properties.issuer())
-                .withClaim("roles", securityUser.getAuthorietiesAsString())
-                .sign(null);
+                .withClaim(ROLES_CLAIM_NAME, securityUser.getAuthorietiesAsString())
+                .sign(algorithm);
     }
 }
