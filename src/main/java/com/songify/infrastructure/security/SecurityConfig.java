@@ -14,6 +14,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -33,23 +34,27 @@ public class SecurityConfig {
     }
 
     @Bean
-    AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+    AuthenticationManager authenticationManager(AuthenticationConfiguration config, AuthenticationSuccessHandler successHandler) throws Exception {
         return config.getAuthenticationManager();
     }
 
     @Bean
-    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    SecurityFilterChain securityFilterChain(HttpSecurity http, AuthenticationSuccessHandler successHandler, CustomOidcUserService customOidcUserService) throws Exception {
         http.csrf(c->c.disable());
         http.cors(corsConfigurerCustomizer());
         http.formLogin(c->c.disable());
         http.httpBasic(c->c.disable());
-        http.oauth2Login(Customizer.withDefaults());
-        // http.sessionManagement(c->c.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+        http.oauth2Login(c -> c.successHandler(successHandler)
+                .userInfoEndpoint(userinfo -> userinfo.oidcUserService(
+                        customOidcUserService
+                )));
+        //http.sessionManagement(c->c.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         http.authorizeHttpRequests(
                 authotize -> authotize
                         .requestMatchers("/swagger-ui/**").permitAll()
                         .requestMatchers("/swagger-resources/**").permitAll()
                         .requestMatchers("/v3/api-docs/**").permitAll()
+                        .requestMatchers("/message").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/songs/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/albums/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/artists/**").permitAll()
