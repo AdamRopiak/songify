@@ -1,11 +1,14 @@
 package feature;
 
 import com.songify.SongifyApplication;
+import com.songify.infrastructure.security.jwt.JwtAuthConverter;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
@@ -15,6 +18,7 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import static org.hamcrest.Matchers.*;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.authentication;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -36,16 +40,28 @@ class HappyPathIntegrationTest {
         registry.add("spring.datasource.url", postgreSQLContainer::getJdbcUrl);
     }
 
+    @Autowired
+    private JwtAuthConverter jwtAuthConverter;
+
+
     @Test
     public void f() throws Exception {
-//1. when I go to /song then I can see no songs
+//1. when I go to /song without jwt token then I can see no songs
         mockMvc.perform(get("/songs")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.songs", empty()));
+
+//1a. when I go to /song with jwt token then I can see no songs
+        mockMvc.perform(get("/songs")
+                        .with(authentication(createJwtWithAdminRole()))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.songs", empty()));
 
 //2. when I post to /song with Song "Till i collapse" then Song "Til i collapse" is returned with id 1
         mockMvc.perform(post("/songs")
+                .with(authentication(createJwtWithAdminRole()))
                 .content("""
                         {
                           "songName": "Till i collapse",
@@ -65,6 +81,7 @@ class HappyPathIntegrationTest {
 
 //3. when I post to /song with Song "Lose Yourself" then Song "Lose Yourself" is returned with id 2
         mockMvc.perform(post("/songs")
+                        .with(authentication(createJwtWithAdminRole()))
                 .content("""
                         {
                           "songName": "Lose Yourself",
@@ -80,6 +97,33 @@ class HappyPathIntegrationTest {
                 .andExpect(jsonPath("$.song.genreDto.genreId",is(1)))
                 .andExpect(jsonPath("$.song.genreDto.genreName", is("default")));
 
+//3a. SECURITY TEST when I post to /song without JWT token with Song "Lose Yourself" then 401 unautorized is returned
+        mockMvc.perform(post("/songs")
+                        .content("""
+                        {
+                          "songName": "Lose Yourself",
+                          "releaseDate": "2026-05-18T16:07:44.866Z",
+                          "songDuration": 0,
+                          "songLanguage": "ENGLISH"
+                        }
+                        """.trim())
+                        .contentType(MediaType.APPLICATION_JSON))
+                        .andExpect(status().isUnauthorized());
+
+//3b. SECURITY TEST when I post to /song with JWT token but with ROLE_USER with Song "Lose Yourself" then 403 forbiden is returned
+        mockMvc.perform(post("/songs")
+                        .with(authentication(createJwtWithUserRole()))
+                        .content("""
+                        {
+                          "songName": "Lose Yourself",
+                          "releaseDate": "2026-05-18T16:07:44.866Z",
+                          "songDuration": 0,
+                          "songLanguage": "ENGLISH"
+                        }
+                        """.trim())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isForbidden());
+
 //4. when I go to /genre then I can see no genres
         mockMvc.perform(get("/genres")
                 .contentType(MediaType.APPLICATION_JSON))
@@ -89,6 +133,7 @@ class HappyPathIntegrationTest {
 
 //5. when I post to /genre with Genre "Rap" then Genre "Rap" is returned with id 2
         mockMvc.perform(post("/genres")
+                        .with(authentication(createJwtWithAdminRole()))
                 .content("""
                         {
                             "genreName": "Rap"
@@ -107,6 +152,7 @@ class HappyPathIntegrationTest {
 
 //7. when I put to /song/1/genre/2 then Genre with id 2 ("Rap") is added to Song with id 1 ("Til i collapse")
         mockMvc.perform(put("/songs/1/genres/2")
+                        .with(authentication(createJwtWithAdminRole()))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", is("Updated")));
@@ -118,6 +164,7 @@ class HappyPathIntegrationTest {
                 .andExpect(jsonPath("$.song.genreDto.genreName", is("Rap")));
 //9. when I put to /song/2/genre/1 then Genre with id 1 ("Rap") is added to Song with id 2 ("Lose Yourself")
         mockMvc.perform(put("/songs/2/genres/2")
+                        .with(authentication(createJwtWithAdminRole()))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", is("Updated")));
@@ -129,6 +176,7 @@ class HappyPathIntegrationTest {
 
 //11. when I post to /albums with Album "EminemAlbum1" and Song with id 1 then Album "EminemAlbum1" is returned with id 1
         mockMvc.perform(post("/albums")
+                        .with(authentication(createJwtWithAdminRole()))
                 .content("""
                         {
                           "albumTitle": "EminemAlbum1",
@@ -153,6 +201,7 @@ class HappyPathIntegrationTest {
 
 //13. when I post to /artists with Artist "Eminem" then Artist "Eminem" is returned with id 1
         mockMvc.perform(post("/artists")
+                        .with(authentication(createJwtWithAdminRole()))
                         .content("""
                                 {
                                         "artistName": "Eminem"
@@ -165,6 +214,7 @@ class HappyPathIntegrationTest {
 
 // 14. when I put to /artists/1/albums/1 then Artist with id 1 ("Eminem") is added to Album with id 1 ("EminemAlbum1")
         mockMvc.perform(put("/artists/1/albums/1")
+                        .with(authentication(createJwtWithAdminRole()))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", is("Artist with id: 1 has been added to album with id: 1")));
@@ -179,6 +229,7 @@ class HappyPathIntegrationTest {
 
 //16. when I put to /albums/1/songs/2 then Song with id 2 ("Lose Yourself") is added to Album with id 1 ("EminemAlbum1")
         mockMvc.perform(put("/albums/1/songs/2")
+                        .with(authentication(createJwtWithAdminRole()))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.albumId", is(1)))
@@ -192,4 +243,22 @@ class HappyPathIntegrationTest {
                 .andExpect(jsonPath("$.songs[*].id", containsInAnyOrder(1, 2)))
                 .andExpect(jsonPath("$.artists[*].artistId", containsInAnyOrder(1)));
     }
+
+    private JwtAuthenticationToken createJwtWithAdminRole(){
+        Jwt jwt = Jwt.withTokenValue("123")
+                .claim("email", "polishmilk@o2.pl")
+                .header("alg", "none")
+                .build();
+        return jwtAuthConverter.convert(jwt);
+    }
+
+
+    private JwtAuthenticationToken createJwtWithUserRole(){
+        Jwt jwt = Jwt.withTokenValue("123")
+                .claim("email", "John@gmail.com")
+                .header("alg", "none")
+                .build();
+        return jwtAuthConverter.convert(jwt);
+    }
+
 }
