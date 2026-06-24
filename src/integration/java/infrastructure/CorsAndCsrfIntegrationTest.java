@@ -1,0 +1,53 @@
+package infrastructure;
+
+import com.songify.SongifyApplication;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
+import org.springframework.test.web.servlet.MockMvc;
+import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
+
+import java.util.List;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.options;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+
+@AutoConfigureMockMvc
+@SpringBootTest(classes = SongifyApplication.class)
+@ActiveProfiles("integration")
+@Testcontainers
+public class CorsAndCsrfIntegrationTest {
+
+    @Autowired
+    private MockMvc mockMvc;
+
+    @Container
+    static PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContainer<>("postgres:15-alpine");
+
+    @DynamicPropertySource
+    public static void propertiyOverride(DynamicPropertyRegistry registry) {
+        registry.add("spring.datasource.url", postgreSQLContainer::getJdbcUrl);
+    }
+
+    @Test
+    public void testCors() throws Exception {
+        mockMvc.perform(options("/songs")
+                        .header("Access-Control-Request-Method", List.of("GET", "POST", "PUT", "DELETE", "PATCH"))
+                        .header("Origin", "https://localhost:3000")
+                )
+                .andExpect(header().exists("Access-Control-Allow-Origin"))
+                .andExpect(header().string("Access-Control-Allow-Origin", "https://localhost:3000"))
+                .andExpect(header().exists("Access-Control-Allow-Methods"))
+                .andExpect(header().string("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,PATCH"))
+                .andExpect(status().isOk());
+    }
+}
